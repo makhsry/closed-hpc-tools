@@ -752,23 +752,19 @@ this_is_new_job(){
 	# 
 	where_is_comsol 		# getting comsol path and settle
 	#
-	while true; do
-		read -p "please provide comsol INPUT file name (this script assumes input on relative path ../) = " inputmph
-		if [ -n $inputmph ]; then
-			echo 'creating a copy of input file ../ '$inputmph ' in ' $whattimeisit
-			cp -v ../$inputmph .
-			if [ $? -ne 0 ]; then
-				echo "copy operation failed. please put input file ../ relative and try again."
-				read -p "do you want to try again? (yes/no): " retrycopy
-				if [ "$retrycopy" != "yes" ]; then
-					echo 'user declined to retry, terminating fully.'
-					exit 1 # could use set -e but this is better for debugging 
-				fi
-   			fi
-		else
-			echo 'you must provide input file name'
-		fi 
-	done 
+ 	echo "input file must be under (relative) ../, otherwise fails."
+	read -p "please provide comsol INPUT file name (this script assumes input on relative path ../) = " inputmph
+	if [ -n $inputmph ]; then
+		echo 'creating a copy of input file ../ '$inputmph ' in ' $whattimeisit
+		cp -v ../$inputmph .
+		if [ $? -ne 0 ]; then
+			echo "copy operation failed. please put input file ../ relative and try again."
+   			echo "OR manually add the file to the directory once this script exists"
+      			echo "directory to put the file is: _" $whattimeisit
+		fi
+	else
+		echo 'you must provide input file name'
+	fi 
 	echo 'created a copy of file ../ '$inputmph ' in ' $whattimeisit
 	# 
 	echo 'if this is for one single study, provide study tag once prompt, otherwise type in +no+. (std2/no)'
